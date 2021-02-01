@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="food"
+            type="com.example.finalfinalmadmex.models.FoodModel" />
+
+        <variable
+            name="foodInterface"
+            type="com.example.finalfinalmadmex.adapters.FoodListAdapter.FoodInterface" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="#EEEEEE"
+        android:orientation="vertical"
+        android:onClick="@{()-> foodInterface.onItemClick(food)}">
+
+
+        <ImageView
+            android:id="@+id/foodPic"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="16dp"
+            android:foodPic="@{food.photoURL}"
+        />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans_extrabold"
+            android:text="@{food.name}"
+            android:textSize="25sp"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="@{String.valueOf(food.price)+ ` DKK`}"
+            android:textSize="20sp"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/open_sans"
+            android:text="@{food.type}"
+            android:textSize="12sp"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/btn_add_to_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="ADD TO CART"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/buttons"
+            android:onClick="@{()-> foodInterface.addItem(food)}"
+            />
+
+
+    </LinearLayout>
+</layout>
