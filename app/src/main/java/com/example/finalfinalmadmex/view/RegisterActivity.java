@@ -36,7 +36,6 @@ public class RegisterActivity extends AppCompatActivity {
         tvFullName = findViewById(R.id.tvFullName);
         tvEmail = findViewById(R.id.tvEmail);
         tvPassword = findViewById(R.id.tvPassword);
-        tvPhone = findViewById(R.id.tvPhone);
         btnRegister = findViewById(R.id.btnRegister);
         openLogActivity = findViewById(R.id.openLogActivity);
 

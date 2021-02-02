@@ -26,6 +26,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,15 +39,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
-
-
+import java.util.Arrays;
 
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
     CallbackManager mCallbackManager;
-    private LoginButton btnLoginFb;
+    Button btnLoginFb;
     private FirebaseAuth mAuth;
     CheckBox remember;
 
@@ -87,45 +87,29 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize Facebook Login button
         mCallbackManager = CallbackManager.Factory.create();
-        btnLoginFb = findViewById(R.id.btnLoginFb);
-        btnLoginFb.setReadPermissions("email", "public_profile");
-        btnLoginFb.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+        btnLoginFb = findViewById(R.id.btnFacebook);
+        btnLoginFb.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-              handleFacebookAccessToken(loginResult.getAccessToken());
+            public void onClick(View v) {
+                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,
+                        Arrays.asList("email", "public_profile"));
+                LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        handleFacebookAccessToken(loginResult.getAccessToken());
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Log.d(TAG, "Callback is canceled");
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+                        Log.d(TAG, "Callback is in error");
+                    }
+                });
             }
-
-            @Override
-            public void onCancel() {
-                Log.d(TAG, "Callback is canceled");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d(TAG, "Callback is in error");
-            }
-        });
-
-
-
-        //Code to set the checklistener for Remember me.
-        remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(buttonView.isChecked()){
-                    SharedPreferences  preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("remember", "true");
-                    editor.apply();
-
-                }else if(!buttonView.isChecked()){
-                    SharedPreferences  preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("remember", "false");
-                    editor.apply();
-                }
-                }
-
         });
 
 
@@ -173,6 +157,28 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
+        //Code to set the checklistener for Remember me.
+        remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(buttonView.isChecked()){
+                    SharedPreferences  preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("remember", "true");
+                    editor.apply();
+
+                }else if(!buttonView.isChecked()){
+                    SharedPreferences  preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("remember", "false");
+                    editor.apply();
+                }
+            }
+
+        });
+
+
 openRegActivity.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {

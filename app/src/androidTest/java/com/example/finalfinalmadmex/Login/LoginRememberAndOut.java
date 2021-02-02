@@ -1,4 +1,4 @@
-package com.example.finalfinalmadmex.view;
+package com.example.finalfinalmadmex.Login;
 
 
 import android.view.View;
@@ -11,91 +11,107 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.example.finalfinalmadmex.R;
+import com.example.finalfinalmadmex.view.LoginActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class ResetBasketAfterContinueShoppingClick {
+public class LoginRememberAndOut {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<LoginActivity> mActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
 
     @Test
-    public void resetBasketAfterContinueShoppingClick() {
-        ViewInteraction materialButton = onView(
-                allOf(withId(R.id.btn_add_to_cart), withText("ADD TO CART"),
+    public void loginRememberAndOut() {
+        ViewInteraction appCompatEditText = onView(
+                allOf(withId(R.id.logEmail),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.foodRecyclerView),
-                                        0),
-                                4),
-                        isDisplayed()));
-        materialButton.perform(click());
-
-        ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.snackbar_action), withText("Checkout"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("com.google.android.material.snackbar.Snackbar$SnackbarLayout")),
+                                        withId(android.R.id.content),
                                         0),
                                 1),
                         isDisplayed()));
-        materialButton2.perform(click());
+        appCompatEditText.perform(replaceText("wpoznachowski@gmail.com"), closeSoftKeyboard());
 
-        ViewInteraction materialButton3 = onView(
-                allOf(withId(R.id.placeOrderButton), withText("Place Order"),
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.logPassword),
                         childAtPosition(
                                 childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
+                                        withId(android.R.id.content),
                                         0),
-                                3)));
-        materialButton3.perform(scrollTo(), click());
+                                0),
+                        isDisplayed()));
+        appCompatEditText2.perform(replaceText("123456"), closeSoftKeyboard());
 
-        ViewInteraction materialButton4 = onView(
-                allOf(withId(R.id.continueShoppingButton), withText("Continue Shopping"),
+        ViewInteraction appCompatCheckBox = onView(
+                allOf(withId(R.id.rememberMe), withText("Remember Me"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.nav_host_fragment),
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
+                        isDisplayed()));
+        appCompatCheckBox.perform(click());
+
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(R.id.btnLogin), withText("LOG IN"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
                                         0),
                                 2),
                         isDisplayed()));
-        materialButton4.perform(click());
+        appCompatButton.perform(click());
 
-        ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.basketFragment), withContentDescription("Basket"),
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction overflowMenuButton = onView(
+                allOf(withContentDescription("More options"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.action_bar),
                                         1),
+                                1),
+                        isDisplayed()));
+        overflowMenuButton.perform(click());
+
+        ViewInteraction materialTextView = onView(
+                allOf(withId(R.id.title), withText("Logout"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.content),
+                                        0),
                                 0),
                         isDisplayed()));
-        actionMenuItemView.perform(click());
+        materialTextView.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.orderTotalTextView), withText("Total: DKK 0"),
-                        withParent(withParent(IsInstanceOf.<View>instanceOf(android.widget.ScrollView.class))),
+                allOf(withId(R.id.tvLogin), withText("LOG IN"),
+                        withParent(withParent(withId(android.R.id.content))),
                         isDisplayed()));
-        textView.check(matches(withText("Total: DKK 0")));
+        textView.check(matches(withText("LOG IN")));
     }
 
     private static Matcher<View> childAtPosition(

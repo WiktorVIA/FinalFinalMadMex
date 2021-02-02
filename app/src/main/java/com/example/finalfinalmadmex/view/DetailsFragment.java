@@ -42,4 +42,5 @@ FoodListViewModel foodListViewModel;
         foodListViewModel = new ViewModelProvider(requireActivity()).get(FoodListViewModel.class);
         fragmentDetailsBinding.setFoodListViewModel(foodListViewModel);
     }
+
 }

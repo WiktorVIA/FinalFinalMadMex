@@ -4,4 +4,6 @@
   <color name="primaryLightColor">#ffffe4</color>
   <color name="primaryDarkColor">#cbae82</color>
   <color name="primaryTextColor">#000000</color>
+  <color name="fb_blue" xmlns:tools="http://schemas.android.com/tools"
+      tools:override="true">#43609C</color>
 </resources>

@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.finalfinalmadmex.R;
 import com.example.finalfinalmadmex.models.BasketFood;
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController);
+         NavigationUI.setupActionBarWithNavController(this, navController);
 
         foodListViewModel = new ViewModelProvider(this).get(FoodListViewModel.class);
         foodListViewModel.getBasket().observe(this, new Observer<List<BasketFood>>() {
